@@ -3,13 +3,13 @@
     "type": "library",
     "description": "Thrift client api for PHP(version sync with thrift)",
     "keywords": ["thrift"],
-    "homepage": "http://github.com/Seldaek/monolog",
+    "homepage": "https://github.com/leric/php-thrift-package",
     "license": "MIT",
     "authors": [
         {
             "name": "Leric Zhang",
             "email": "leric.zhang@gmail.com",
-            "homepage": "https://github.com/leric/php-thrift-package",
+            "homepage": "http://www.leric.info",
             "role": "Developer"
         }
     ],
