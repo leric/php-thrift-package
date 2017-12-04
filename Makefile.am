@@ -22,19 +22,24 @@ if WITH_TESTS
 SUBDIRS = test
 endif
 
-%.so:
-	cd src/ext/thrift_protocol/ \
-	  && $(MAKE)
-
 if WITH_PHP_EXTENSION
+%.so:
+	cd src/ext/thrift_protocol/ && $(MAKE)
+
 phpconfdir=$(PHP_CONFIG_PREFIX)
 phpconf_DATA=thrift_protocol.ini
 
 phpmoduledir = `php-config --extension-dir`
 phpmodule_SCRIPTS = src/ext/thrift_protocol/modules/thrift_protocol.so
+
+distclean-local:
+	cd $(phpmodule_SCRIPTS) && $(PHPIZE) --clean
+
 endif
 
 phpdir = $(PHP_PREFIX)/Thrift
+php_DATA = \
+  lib/Thrift/TMultiplexedProcessor.php
 
 phpbasedir = $(phpdir)/Base
 phpbase_DATA = \
@@ -66,7 +71,10 @@ phpprotocol_DATA = \
   lib/Thrift/Protocol/TBinaryProtocol.php \
   lib/Thrift/Protocol/TCompactProtocol.php \
   lib/Thrift/Protocol/TJSONProtocol.php \
-  lib/Thrift/Protocol/TProtocol.php
+  lib/Thrift/Protocol/TMultiplexedProtocol.php \
+  lib/Thrift/Protocol/TProtocol.php \
+  lib/Thrift/Protocol/TProtocolDecorator.php \
+  lib/Thrift/Protocol/TSimpleJSONProtocol.php
 
 phpprotocoljsondir = $(phpprotocoldir)/JSON
 phpprotocoljson_DATA = \
@@ -74,6 +82,14 @@ phpprotocoljson_DATA = \
   lib/Thrift/Protocol/JSON/ListContext.php \
   lib/Thrift/Protocol/JSON/LookaheadReader.php \
   lib/Thrift/Protocol/JSON/PairContext.php
+
+phpprotocolsimplejsondir = $(phpprotocoldir)/SimpleJSON
+phpprotocolsimplejson_DATA = \
+  lib/Thrift/Protocol/SimpleJSON/CollectionMapKeyException.php \
+  lib/Thrift/Protocol/SimpleJSON/Context.php \
+  lib/Thrift/Protocol/SimpleJSON/ListContext.php \
+  lib/Thrift/Protocol/SimpleJSON/MapContext.php \
+  lib/Thrift/Protocol/SimpleJSON/StructContext.php
 
 phpserializerdir = $(phpdir)/Serializer
 phpserializer_DATA = \
@@ -96,6 +112,7 @@ phpstringfunc_DATA = \
 phptransportdir = $(phpdir)/Transport
 phptransport_DATA = \
   lib/Thrift/Transport/TBufferedTransport.php \
+  lib/Thrift/Transport/TCurlClient.php \
   lib/Thrift/Transport/TFramedTransport.php \
   lib/Thrift/Transport/THttpClient.php \
   lib/Thrift/Transport/TMemoryBuffer.php \
@@ -108,18 +125,24 @@ phptransport_DATA = \
 phptypedir = $(phpdir)/Type
 phptype_DATA = \
   lib/Thrift/Type/TMessageType.php \
-  lib/Thrift/Type/TType.php
+  lib/Thrift/Type/TType.php \
+  lib/Thrift/Type/TConstant.php
 
 EXTRA_DIST = \
   lib \
   src/autoload.php \
+  src/ext/thrift_protocol/config.m4 \
   src/ext/thrift_protocol/config.w32 \
+  src/ext/thrift_protocol/php_thrift_protocol7.cpp \
   src/ext/thrift_protocol/php_thrift_protocol.cpp \
   src/ext/thrift_protocol/php_thrift_protocol.h \
+  src/ext/thrift_protocol/run-tests.php \
   src/Thrift.php \
   src/TStringUtils.php \
+  coding_standards.md \
   thrift_protocol.ini \
-  README.apache
+  README.apache.md \
+  README.md
 
 MAINTAINERCLEANFILES = \
   Makefile \

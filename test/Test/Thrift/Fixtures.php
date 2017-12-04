@@ -46,18 +46,20 @@ class Fixtures
     self::$testArgs['testString3'] =
       "string that ends in double-backslash \\\\";
 
+    self::$testArgs['testUnicodeStringWithNonBMP'] =
+      "สวัสดี/𝒯";
+
     self::$testArgs['testDouble'] = 3.1415926535898;
 
+	// TODO: add testBinary() call
+	
     self::$testArgs['testByte'] = 0x01;
 
     self::$testArgs['testI32'] = pow( 2, 30 );
 
-    if ( PHP_INT_SIZE == 8 )
-    {
+    if (PHP_INT_SIZE == 8) {
       self::$testArgs['testI64'] = pow( 2, 60 );
-    }
-    else
-    {
+    } else {
       self::$testArgs['testI64'] = "1152921504606847000";
     }
 
