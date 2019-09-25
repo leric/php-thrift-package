@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,25 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift.protocol
  */
 
-#pragma once
+namespace Thrift\Factory;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+use Thrift\Protocol\TCompactProtocol;
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+/**
+ * Compact Protocol Factory
+ */
+class TCompactProtocolFactory implements TProtocolFactory
+{
+    public function __construct()
+    {
+    }
 
+    public function getProtocol($trans)
+    {
+        return new TCompactProtocol($trans);
+    }
+}

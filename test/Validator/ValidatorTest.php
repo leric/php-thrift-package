@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -17,12 +18,24 @@
  * under the License.
  */
 
-#pragma once
+namespace Test\Thrift;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+require __DIR__ . '/../../../../vendor/autoload.php';
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+use Thrift\ClassLoader\ThriftClassLoader;
 
+/**
+ * Class TestValidators
+ * @package Test\Thrift
+ *
+ * @runTestsInSeparateProcesses
+ */
+class ValidatorTest extends BaseValidatorTest
+{
+    public function setUp()
+    {
+        /** @var \Composer\Autoload\ClassLoader $loader */
+        $loader = require __DIR__ . '/../../../../vendor/autoload.php';
+        $loader->addPsr4('', __DIR__ . '/../packages/phpv');
+    }
+}

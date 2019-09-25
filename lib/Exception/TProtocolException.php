@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,35 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift.protocol
+ * @author: rmarin (marin.radu@facebook.com)
  */
 
-#pragma once
+namespace Thrift\Exception;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+/**
+ * Protocol module. Contains all the types and definitions needed to implement
+ * a protocol encoder/decoder.
+ *
+ * @package thrift.protocol
+ */
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+/**
+ * Protocol exceptions
+ */
+class TProtocolException extends TException
+{
+    const UNKNOWN = 0;
+    const INVALID_DATA = 1;
+    const NEGATIVE_SIZE = 2;
+    const SIZE_LIMIT = 3;
+    const BAD_VERSION = 4;
+    const NOT_IMPLEMENTED = 5;
+    const DEPTH_LIMIT = 6;
 
+    public function __construct($message = null, $code = 0)
+    {
+        parent::__construct($message, $code);
+    }
+}

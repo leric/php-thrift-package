@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,19 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift
  */
 
-#pragma once
+namespace Thrift\Type;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
-
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
-
+/**
+ * Message types for RPC
+ */
+class TMessageType
+{
+    const CALL  = 1;
+    const REPLY = 2;
+    const EXCEPTION = 3;
+    const ONEWAY = 4;
+}

@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,30 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift.protocol
  */
 
-#pragma once
+namespace Thrift\Factory;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+use Thrift\Protocol\TBinaryProtocol;
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+/**
+ * Binary Protocol Factory
+ */
+class TBinaryProtocolFactory implements TProtocolFactory
+{
+    private $strictRead_ = false;
+    private $strictWrite_ = false;
 
+    public function __construct($strictRead = false, $strictWrite = false)
+    {
+        $this->strictRead_ = $strictRead;
+        $this->strictWrite_ = $strictWrite;
+    }
+
+    public function getProtocol($trans)
+    {
+        return new TBinaryProtocol($trans, $this->strictRead_, $this->strictWrite_);
+    }
+}

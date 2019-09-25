@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,37 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift
  */
 
-#pragma once
+namespace Thrift\Type;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+/**
+ * Base class for constant Management
+ */
+abstract class TConstant
+{
+    /**
+     * Don't instanciate this class
+     */
+    protected function __construct()
+    {
+    }
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+    /**
+     * Get a constant value
+     * @param  string $constant
+     * @return mixed
+     */
+    public static function get($constant)
+    {
+        if (is_null(static::$$constant)) {
+            static::$$constant = call_user_func(
+                sprintf('static::init_%s', $constant)
+            );
+        }
 
+        return static::$$constant;
+    }
+}

@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,41 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift.transport
  */
 
-#pragma once
+namespace Thrift\Transport;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+use Thrift\Exception\TTransportException;
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+/**
+ * Transport that only accepts writes and ignores them.
+ * This is useful for measuring the serialized size of structures.
+ *
+ * @package thrift.transport
+ */
+class TNullTransport extends TTransport
+{
+    public function isOpen()
+    {
+        return true;
+    }
 
+    public function open()
+    {
+    }
+
+    public function close()
+    {
+    }
+
+    public function read($len)
+    {
+        throw new TTransportException("Can't read from TNullTransport.");
+    }
+
+    public function write($buf)
+    {
+    }
+}

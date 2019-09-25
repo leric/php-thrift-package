@@ -1,3 +1,4 @@
+<?php
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -15,14 +16,37 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
+ * @package thrift.protocol
  */
 
-#pragma once
+namespace Thrift\Protocol\SimpleJSON;
 
-PHP_FUNCTION(thrift_protocol_write_binary);
-PHP_FUNCTION(thrift_protocol_read_binary);
-PHP_FUNCTION(thrift_protocol_read_binary_after_message_begin);
+use Thrift\Protocol\TSimpleJSONProtocol;
 
-extern zend_module_entry thrift_protocol_module_entry;
-#define phpext_thrift_protocol_ptr &thrift_protocol_module_entry
+class StructContext extends Context
+{
+    protected $first_ = true;
+    protected $colon_ = true;
+    private $p_;
 
+    public function __construct($p)
+    {
+        $this->p_ = $p;
+    }
+
+    public function write()
+    {
+        if ($this->first_) {
+            $this->first_ = false;
+            $this->colon_ = true;
+        } else {
+            $this->p_->getTransport()->write(
+                $this->colon_ ?
+                    TSimpleJSONProtocol::COLON :
+                    TSimpleJSONProtocol::COMMA
+            );
+            $this->colon_ = !$this->colon_;
+        }
+    }
+}
