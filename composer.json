@@ -17,8 +17,8 @@
         "php": ">=5.5.0"
     },
     "autoload": {
-        "psr-0": {
-            "Thrift": "lib"
+        "psr-4": {
+            "Thrift\\": "lib"
         }
     }
 }
